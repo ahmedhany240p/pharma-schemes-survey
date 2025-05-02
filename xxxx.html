@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تقييم تدريب فارما سكيمز</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #e91e63;
+            --secondary: #2c3e50;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --success: #28a745;
+        }
+        
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #f5f5ff;
+            margin: 0;
+            padding: 0;
+            color: var(--dark);
+            direction: rtl;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            position: relative;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 20px 0;
+            position: relative;
+        }
+        
+        h1 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+        }
+        
+        .description {
+            color: var(--secondary);
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+        
+        .visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: var(--secondary);
+            font-size: 1.1rem;
+        }
+        
+        input[type="text"],
+        input[type="email"],
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+            text-align: right;
+        }
+        
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.2);
+        }
+        
+        .radio-group, .checkbox-group {
+            margin-top: 10px;
+        }
+        
+        .custom-radio, .custom-checkbox {
+            position: relative;
+            padding-right: 35px;
+            cursor: pointer;
+            user-select: none;
+            margin-bottom: 12px;
+            display: block;
+        }
+        
+        .custom-radio input, .custom-checkbox input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+        
+        .checkmark {
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 22px;
+            width: 22px;
+            background-color: #eee;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+        
+        .custom-checkbox .checkmark {
+            border-radius: 4px;
+        }
+        
+        .custom-radio:hover input ~ .checkmark,
+        .custom-checkbox:hover input ~ .checkmark {
+            background-color: #ccc;
+        }
+        
+        .custom-radio input:checked ~ .checkmark,
+        .custom-checkbox input:checked ~ .checkmark {
+            background-color: var(--primary);
+        }
+        
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+        
+        .custom-radio input:checked ~ .checkmark:after,
+        .custom-checkbox input:checked ~ .checkmark:after {
+            display: block;
+        }
+        
+        .custom-radio .checkmark:after {
+            top: 7px;
+            right: 7px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: white;
+        }
+        
+        .custom-checkbox .checkmark:after {
+            right: 8px;
+            top: 4px;
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+        
+        .slider-container {
+            padding: 10px 0;
+        }
+        
+        .slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: #e0e0e0;
+            outline: none;
+            transition: all 0.3s;
+        }
+        
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .slider::-moz-range-thumb {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .slider-value {
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-top: 10px;
+        }
+        
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+            color: var(--secondary);
+            font-size: 0.9rem;
+        }
+        
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: block;
+            margin: 30px auto 0;
+            font-weight: bold;
+            font-family: 'Cairo', sans-serif;
+        }
+        
+        button:hover {
+            background-color: #d81b60;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(216, 27, 96, 0.3);
+        }
+        
+        .progress-container {
+            width: 100%;
+            background-color: #f3f3f3;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background-color: var(--primary);
+            width: 0%;
+            transition: width 0.5s ease;
+            border-radius: 10px;
+        }
+        
+        .progress-text {
+            text-align: center;
+            margin-top: 8px;
+            font-size: 0.9rem;
+            color: var(--secondary);
+        }
+        
+        .question-number {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+            border-radius: 50%;
+            margin-left: 10px;
+        }
+        
+        .required-mark {
+            color: var(--primary);
+            margin-right: 5px;
+        }
+        
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+        }
+        
+        .toggle-label {
+            margin-right: 15px;
+            margin-left: 15px;
+            font-weight: normal;
+        }
+        
+        .toggle {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        
+        .toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .toggle-slider {
+            background-color: var(--primary);
+        }
+        
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .loading-spinner {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--primary);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .thank-you {
+            text-align: center;
+            display: none;
+            padding: 30px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .thank-you h2 {
+            color: var(--success);
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+        
+        .thank-you p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .thank-you-icon {
+            font-size: 64px;
+            color: var(--success);
+            margin-bottom: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+                margin: 10px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .description {
+                font-size: 1rem;
+            }
+        }
+            
+        /* Add shake animation for validation */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+            20%, 40%, 60%, 80% { transform: translateX(10px); }
+        }
+        .shake {
+            animation: shake 0.8s;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>تقييم تدريب فارما سكيمز</h1>
+            <p class="description">شكرًا لمشاركتك في كورس التصميم. رأيك يهمّنا ويساعدنا في تحسين المحتوى وتقديم تجربة أفضل مستقبلاً. تقييمك يحدث فرق حقيقي 🙏</p>
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+            <div class="progress-text">0% مكتمل</div>
+        </div>
+        
+        <form id="survey-form">
+            <!-- Question 1 -->
+            <div class="form-group" data-question="1">
+                <label for="name"><span class="question-number">١</span> الاسم (اختياري)</label>
+                <input type="text" id="name" name="name" placeholder="أدخل اسمك">
+            </div>
+            
+            <!-- Question 2 -->
+            <div class="form-group" data-question="2">
+                <label for="email"><span class="question-number">٢</span> البريد الإلكتروني (اختياري)</label>
+                <input type="email" id="email" name="email" placeholder="أدخل بريدك الإلكتروني">
+            </div>
+            
+            <!-- Question 3 -->
+            <div class="form-group" data-question="3">
+                <label><span class="question-number">٣</span> ما رأيك في محتوى الكورس؟<span class="required-mark">*</span></label>
+                <div class="radio-group">
+                    <label class="custom-radio">
+                        ممتاز
+                        <input type="radio" name="content_rating" value="ممتاز" required>
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="custom-radio">
+                        جيد جدًا
+                        <input type="radio" name="content_rating" value="جيد جدًا">
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="custom-radio">
+                        جيد
+                        <input type="radio" name="content_rating" value="جيد">
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="custom-radio">
+                        مقبول
+                        <input type="radio" name="content_rating" value="مقبول">
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="custom-radio">
+                        ضعيف
+                        <input type="radio" name="content_rating" value="ضعيف">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+            </div>
+            
+            <!-- Question 4 -->
+            <div class="form-group" data-question="4">
+                <label><span class="question-number">٤</span> مدى استفادتك من الكورس؟<span class="required-mark">*</span></label>
+                <div class="radio-group">
+                    <label class="custom-radio">
+                        استفدت جدًا
+                        <input type="radio" name="benefit_rating" value="استفدت جدًا" required>
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="custom-radio">
+                        استفدت بشكل متوسط
+                        <input type="radio" name="benefit_rating" value="استفدت بشكل متوسط">
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="custom-radio">
+                        استفدت قليل
+                        <input type="radio" name="benefit_rating" value="استفدت قليل">
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="custom-radio">
+                        لم أستفد
+                        <input type="radio" name="benefit_rating" value="لم أستفد">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+            </div>
+            
+            <!-- Question 5 -->
+            <div class="form-group" data-question="5">
+                <label><span class="question-number">٥</span> تقييمك لطريقة الشرح وتبسيط المعلومات<span class="required-mark">*</span></label>
+                <div class="slider-container">
+                    <input type="range" min="1" max="5" value="3" class="slider" id="explanation_rating" name="explanation_rating" required>
+                    <div class="slider-value">3</div>
+                    <div class="slider-labels">
+                        <span>ضعيف</span>
+                        <span>ممتاز</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Question 6 -->
+            <div class="form-group" data-question="6">
+                <label><span class="question-number">٦</span> هل كان وقت الكورس مناسبًا لك؟<span class="required-mark">*</span></label>
+                <div class="toggle-container">
+                    <span class="toggle-label">لا</span>
+                    <label class="toggle">
+                        <!-- Important: When using FormData, the checkbox value is only sent if checked -->
+                        <!-- We might need to handle this on the server-side or use a hidden input -->
+                        <input type="checkbox" id="time_suitable" name="time_suitable" value="نعم"> 
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <span class="toggle-label">نعم</span>
+                </div>
+            </div>
+            
+            <!-- Question 7 -->
+            <div class="form-group" data-question="7">
+                <label><span class="question-number">٧</span> هل تنصح الآخرين بالانضمام للكورس؟<span class="required-mark">*</span></label>
+                <div class="radio-group">
+                    <label class="custom-radio">
+                        نعم
+                        <input type="radio" name="recommend" value="نعم" required>
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="custom-radio">
+                        لا
+                        <input type="radio" name="recommend" value="لا">
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="custom-radio">
+                        ممكن بعد بعض التحسينات
+                        <input type="radio" name="recommend" value="ممكن بعد بعض التحسينات">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+            </div>
+            
+            <!-- Question 8 -->
+            <div class="form-group" data-question="8">
+                <label for="liked_most"><span class="question-number">٨</span> ما أكثر شيء أعجبك في الكورس؟</label>
+                <textarea id="liked_most" name="liked_most" rows="4" placeholder="شاركنا رأيك..."></textarea>
+            </div>
+            
+            <!-- Question 9 -->
+            <div class="form-group" data-question="9">
+                <label for="needs_improvement"><span class="question-number">٩</span> ما الشيء الذي ترى أنه يحتاج إلى تطوير؟</label>
+                <textarea id="needs_improvement" name="needs_improvement" rows="4" placeholder="اقتراحاتك للتطوير..."></textarea>
+            </div>
+            
+            <!-- Question 10 -->
+            <div class="form-group" data-question="10">
+                <label><span class="question-number">١٠</span> تقييمك للتنظيم العام (مواعيد المحتوى والمتابعة والتواصل)<span class="required-mark">*</span></label>
+                <div class="slider-container">
+                    <input type="range" min="1" max="5" value="3" class="slider" id="organization_rating" name="organization_rating" required>
+                    <div class="slider-value">3</div>
+                    <div class="slider-labels">
+                        <span>غير منظم</span>
+                        <span>ممتاز جدًا</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Question 11 -->
+            <div class="form-group" data-question="11">
+                <label><span class="question-number">١١</span> تقييمك لمستوى التفاعل مع الطلاب<span class="required-mark">*</span></label>
+                <div class="slider-container">
+                    <input type="range" min="1" max="5" value="3" class="slider" id="interaction_rating" name="interaction_rating" required>
+                    <div class="slider-value">3</div>
+                    <div class="slider-labels">
+                        <span>ضعيف</span>
+                        <span>عالي ومفيد</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Question 12 -->
+            <div class="form-group" data-question="12">
+                <label for="suggestions"><span class="question-number">١٢</span> هل لديك اقتراحات لتحسين الكورس مستقبلاً؟</label>
+                <textarea id="suggestions" name="suggestions" rows="4" placeholder="اقتراحاتك تهمنا..."></textarea>
+            </div>
+            
+            <!-- Question 13 -->
+            <div class="form-group" data-question="13">
+                <label><span class="question-number">١٣</span> هل ترغب في الانضمام إلى تدريبات أو كورسات أخرى من فارما سكيمز؟<span class="required-mark">*</span></label>
+                <div class="radio-group">
+                    <label class="custom-radio">
+                        نعم
+                        <input type="radio" name="join_future" value="نعم" required>
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="custom-radio">
+                        لا
+                        <input type="radio" name="join_future" value="لا">
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="custom-radio">
+                        حسب المحتوى القادم
+                        <input type="radio" name="join_future" value="حسب المحتوى القادم">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+            </div>
+            
+            <!-- Question 14 -->
+            <div class="form-group" data-question="14">
+                <label for="additional_comments"><span class="question-number">١٤</span> مساحة حرة لأي تعليق أو ملاحظة إضافية</label>
+                <textarea id="additional_comments" name="additional_comments" rows="4" placeholder="أخبرنا بما تفكر..."></textarea>
+            </div>
+            
+            <button type="submit" id="submit-button">إرسال التقييم</button>
+        </form>
+        
+        <div class="loading" id="loading">
+            <div class="loading-spinner"></div>
+            <p>جاري إرسال التقييم...</p>
+        </div>
+        
+        <div class="thank-you" id="thank-you">
+            <div class="thank-you-icon">✓</div>
+            <h2>شكراً لك! 🎉</h2>
+            <p>تم استلام تقييمك بنجاح. نقدر وقتك ومشاركتك معنا في تطوير محتوى الكورس.</p>
+            <p>آراؤك ستساعدنا على تقديم محتوى أفضل في المستقبل.</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate questions on scroll
+            const formGroups = document.querySelectorAll('.form-group');
+            
+            function checkVisibility() {
+                const windowHeight = window.innerHeight;
+                formGroups.forEach(group => {
+                    const rect = group.getBoundingClientRect();
+                    // Show a bit earlier
+                    if (rect.top < windowHeight * 0.95) { 
+                        group.classList.add('visible');
+                    }
+                });
+            }
+            
+            // Debounce scroll event for performance
+            let scrollTimeout;
+            window.addEventListener('scroll', () => {
+                clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(checkVisibility, 50); // Check less frequently
+            });
+            
+            // Initial check after a short delay to ensure layout is stable
+            setTimeout(checkVisibility, 100); 
+            
+            // Slider functionality
+            const sliders = document.querySelectorAll('.slider');
+            sliders.forEach(slider => {
+                const valueDisplay = slider.nextElementSibling;
+                // Ensure the valueDisplay element exists before updating
+                if (valueDisplay && valueDisplay.classList.contains('slider-value')) {
+                    valueDisplay.textContent = slider.value;
+                    
+                    slider.addEventListener('input', function() {
+                        valueDisplay.textContent = this.value;
+                    });
+                } else {
+                    console.error('Slider value display element not found for slider:', slider);
+                }
+            });
+            
+            // --- Progress bar functionality START ---
+            const formForProgress = document.getElementById('survey-form');
+            const progressBar = document.getElementById('progress-bar');
+            const progressText = document.querySelector('.progress-text');
+            // Select required inputs and the toggle checkbox specifically
+            const requiredElements = formForProgress.querySelectorAll('input[required], textarea[required], #time_suitable'); 
+            const totalRequiredCount = Array.from(requiredElements).filter(el => el.hasAttribute('required')).length + 1; // Count required + the toggle
+
+            function updateProgressBar() {
+                let answeredCount = 0;
+                const answeredGroups = new Set(); // Track answered radio groups
+
+                requiredElements.forEach(el => {
+                    let isAnswered = false;
+                    if (el.type === 'radio' && el.required) {
+                        const groupName = el.name;
+                        if (!answeredGroups.has(groupName)) {
+                             if (formForProgress.querySelector(`input[name="${groupName}"]:checked`)) {
+                                isAnswered = true;
+                                answeredGroups.add(groupName); // Mark group as answered
+                            }
+                        }
+                    } else if (el.type === 'checkbox' && el.id === 'time_suitable') { 
+                       // Toggle is always considered "answered" once interacted with or by default
+                       // For simplicity, we'll count it if checked, you might adjust logic
+                       // Or consider it answered if it exists (always contributes 1)
+                       isAnswered = true; // Let's count its existence as sufficient for progress here
+                                          // Or use: isAnswered = el.checked; if checked matters
+                    } else if (el.type === 'range' && el.required) {
+                       // Range sliders always have a value
+                       isAnswered = true;
+                    } else if (el.required && el.value.trim() !== '') {
+                       isAnswered = true;
+                    }
+
+                    if (isAnswered && (el.required || el.id === 'time_suitable')) {
+                        answeredCount++;
+                    }
+                });
+
+                // Correct answered count for radio groups (count group once)
+                answeredCount = answeredGroups.size + // Answered radio groups
+                                Array.from(requiredElements).filter(el => 
+                                    !(el.type === 'radio' && el.required) && // Exclude radios (counted via Set)
+                                    (el.required || el.id === 'time_suitable') && // Include required or the toggle
+                                    (
+                                        (el.type === 'range') || // Ranges always have value
+                                        (el.type === 'checkbox' && el.id === 'time_suitable') || // Toggle exists
+                                        (el.value && el.value.trim() !== '') // Text/Email/Textarea have value
+                                    )
+                                ).length;
+
+
+                const progress = totalRequiredCount > 0 ? Math.min(Math.round((answeredCount / totalRequiredCount) * 100), 100) : 0;
+                if (progressBar) {
+                   progressBar.style.width = progress + '%';
+                }
+                 if (progressText) {
+                    progressText.textContent = progress + '% مكتمل';
+                }
+            }
+            
+            // Add event listeners for inputs to update progress
+            formForProgress.addEventListener('change', updateProgressBar);
+            formForProgress.addEventListener('input', updateProgressBar); // For sliders
+            // Initial progress update
+             updateProgressBar();
+            // --- Progress bar functionality END ---
+            
+            // Form submission
+            const form = document.getElementById('survey-form');
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // --- Validation START ---
+                const requiredFields = form.querySelectorAll('[required]');
+                let firstInvalidField = null;
+                let allValid = true;
+
+                requiredFields.forEach(field => {
+                    let isValid = true;
+                    const formGroup = field.closest('.form-group'); // Find parent group
+
+                    if (field.type === 'radio') {
+                        const radioGroup = form.querySelectorAll(`input[name="${field.name}"]:checked`);
+                        if (radioGroup.length === 0) {
+                            isValid = false;
+                        }
+                    } else if (field.type === 'checkbox') {
+                         // Checkboxes marked required must be checked
+                        if (!field.checked) {
+                           isValid = false;
+                        }
+                    } else if (!field.checkValidity()) { // Handles text, email, range, etc.
+                        isValid = false;
+                    }
+                    
+                    // Add/Remove shake and store first invalid field
+                    if (!isValid && allValid) { // only focus the first error
+                        allValid = false;
+                        firstInvalidField = field;
+                         if (formGroup) {
+                            formGroup.classList.add('shake');
+                            setTimeout(() => {
+                                if (formGroup) formGroup.classList.remove('shake');
+                            }, 800); // Match animation duration
+                        }
+                    }
+                });
+                
+                if (!allValid && firstInvalidField) {
+                     // Scroll to the first invalid field for better UX
+                     firstInvalidField.focus(); 
+                     firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                     console.log('Validation failed. Please fill all required fields.');
+                    return; // Stop submission
+                }
+                // --- Validation END ---
+
+                // Show loading animation
+                document.getElementById('loading').style.display = 'block';
+                document.getElementById('survey-form').style.display = 'none';
+                document.querySelector('.progress-container').style.display = 'none'; // Hide progress bar too
+
+
+                // --- Collect form data using FormData ---
+                const formData = new FormData(form); 
+                // Optional: Log FormData entries to console for debugging
+                console.log('FormData Entries:');
+                for (let [key, value] of formData.entries()) {
+                   console.log(`${key}: ${value}`);
+                }
+                
+                // --- Send data to Google Apps Script ---
+                // !!! استبدل هذا بعنوان URL الخاص بك !!!
+                const scriptURL = 'https://script.google.com/macros/s/AKfycbyTUamzt_Qd5z0kfeLBA3R69UWE1IFF3PpRm7zJt37As8X7954202zYnlFhf2gSYN_N2g/exec'; // <--- ضع رابط النشر الخاص بك هنا 
+                
+                console.log('إرسال البيانات (FormData) إلى:', scriptURL);
+
+                fetch(scriptURL, {
+                    method: 'POST',
+                    // body: JSON.stringify(data), // معطل - لا نرسل JSON الآن
+                    // headers: {                 // معطل - لا نرسل ترويسة JSON الآن
+                    //    'Content-Type': 'application/json' 
+                    // },                          // نهاية التعطيل
+                    body: formData, // !! نرسل FormData مباشرة !!
+                    mode: 'cors' // Keep cors mode
+                })
+                .then(response => {
+                    console.log('الاستجابة الأولية:', response);
+                     if (!response.ok) {
+                        // Throw an error if response status is not OK (e.g., 4xx, 5xx)
+                         throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.text(); // استخدام text() لتجنب أخطاء التحليل المحتملة من Apps Script
+                })
+                .then(text => {
+                    console.log('نص الاستجابة:', text);
+                    let result;
+                    try {
+                        result = JSON.parse(text); // Attempt to parse if Apps Script returns valid JSON
+                        console.log('الاستجابة بعد التحليل:', result);
+                         // Check for success indicator from Apps Script if available
+                         if (result.result !== 'success' && result.result !== 'logged') { 
+                              console.warn('Apps Script did not return a success status:', result);
+                              // Potentially show a different message to the user
+                         }
+                    } catch (e) {
+                        console.error('تعذر تحليل الاستجابة كـ JSON:', e);
+                        console.log('Received non-JSON text:', text);
+                        // الاستمرار بدون تحليل JSON, maybe show generic success
+                        result = { message: text }; 
+                    }
+                    
+                    // Hide loading, show thank you message
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('thank-you').style.display = 'block';
+                })
+                .catch(error => {
+                    console.error('خطأ في الإرسال (Fetch Error):', error);
+                     // Hide loading
+                    document.getElementById('loading').style.display = 'none';
+                    // Show form again or display an error message to the user
+                     document.getElementById('survey-form').style.display = 'block'; 
+                     document.querySelector('.progress-container').style.display = 'block'; // Show progress again
+
+                     // Optional: Display user-friendly error message
+                     alert(`حدث خطأ أثناء إرسال التقييم: ${error.message}\n\nيرجى المحاولة مرة أخرى لاحقًا أو التحقق من اتصالك بالإنترنت.`); 
+                     
+                    // عرض رسالة شكر على أي حال (لتحسين تجربة المستخدم - قد لا يكون مناسبا دائما)
+                    // document.getElementById('thank-you').style.display = 'block'; // Commented out - show error instead
+                });
+
+            });
+            
+            // Shake animation style is added via <style> tag already in the HTML body.
+            // No need to add it via JS again unless it was missing.
+        });
+    </script>
+</body>
+</html>
